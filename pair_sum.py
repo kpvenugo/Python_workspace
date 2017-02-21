@@ -2,7 +2,7 @@ def isPair(num_collection, s):
     length = len(num_collection)
     i = 0
     group_pair = []
-    
+
     while i < length - 1:
         current_sum = num_collection[i] + num_collection[length - 1]
         if current_sum == s:
@@ -24,3 +24,5 @@ if len(pair) != 0:
     print(pair)
 else:
     print("No")
+
+print(num_collection.sort)

@@ -76,6 +76,41 @@ class LinkedList():
             current_node = current_node.next
         return None
 
+    def nonRecursiveReversr(self):
+        if self.head is None:
+            print("LinkedList is empty")
+            return
+        if self.head.next is None:
+            return
+        current = self.head
+        previous = None
+        while current is not None:
+            next = current.next
+            current.next = previous
+            previous = current
+            current = next
+        self.head = previous
+
+    def reverseKtoM(self, k , m):
+        count = 0
+        current = self.head
+        next = None
+        while count < k and current is not None:
+            count =+ 1
+            current = current.next
+        if current is None:
+            print("k greater than length of LinkedList")
+            return
+        reverse_head = current
+        reverse_tail = current.next
+        previous = current
+        while count < m:
+            count =+ 1
+            next = current.next
+            current.next  = previous
+            previous = current
+            current = current.next
+        reverse_head.next = current
 
 L1 = LinkedList()
 for i in range(5, 0, -1):
@@ -83,5 +118,8 @@ for i in range(5, 0, -1):
 L1.printList()
 print("")
 L1.reverse()
+L1.printList()
+print("")
+L1.nonRecursiveReversr()
 L1.printList()
 # size() the paranthesis is imp otherwise it will print the size method
