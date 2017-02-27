@@ -7,6 +7,14 @@ class Node():
         self.data = data
         self.next = next
 
+    def recursive_reverseLL(self):
+        if self.next is None:
+            return self
+        self = self.next
+        new_head_node = self.recursive_reverseLL()
+        self.next.next = self.next
+        return new_head_node
+
 
 class LinkedList():
     def __init__(self, head=None):
@@ -20,9 +28,10 @@ class LinkedList():
     def printList(self):
         if self.head is None:
             print("empty List")
+            return
         current = self.head
         while current.next is not None:
-            print(current.data, end = "-->")  # Print till last but one node
+            print(current.data, end="-->")  # Print till last but one node
             current = current.next
         print(current.data)  # Last node
 
@@ -160,20 +169,80 @@ class LinkedList():
                 previous = current
             current = current.next
 
+    def moveNode(self, fromList):
+        if fromList.head is None:
+            return
+        if self.head is None:
+            self.head = fromList.head
+            fromList.head = fromList.head.next
+            self.head.next = None
+            return
+        new_head_fromList = fromList.head.next
+        fromList.head.next = self.head
+        self.head = fromList.head
+        fromList.head = new_head_fromList
 
-# L1 = LinkedList()
-# L2 = LinkedList()
-# sList = LinkedList()
+    def alternateList(self):  # use helper function moveNode
+        if self.head is None:
+            return None
+        count = 1
+        listList = []  # to return back 2 lists
+        current = self.head
+        newList1 = LinkedList()
+        newList2 = LinkedList()
+        while current is not None:
+            current = current.next
+            if count % 2 == 1:
+                newList1.moveNode(self)
+            else:
+                newList2.moveNode(self)
+            count += 1
+        listList.append(newList1)
+        listList.append(newList2)
+        return listList
+
+    def recursiveReverse(self):
+        first_node = self.head
+        self.head = first_node.recursive_reverseLL()  # Note this doesn't work
+
+    def shuffleMerge(self, secondList):
+        if self.head is None:
+            self.head = secondList.head
+            return
+        if secondList.head is None:
+            return
+        current = self.head
+        next = current.next
+        current_second = secondList.head
+        next_second = secondList.head.next
+        while current.next is not None and current_second.next is not None:
+            current.next = current_second
+            current_second.next = next
+            current = next
+            next = current.next
+            current_second = next_second
+            next_second = current_second.next
+        if current.next is None:
+            if current_second.next is not None:
+                current.next = current_second
+        else:
+            current.next = current_second
+            current_second.next = next
+
+
+L1 = LinkedList()
+L2 = LinkedList()
+sList = LinkedList()
 # input_list = [5, 612, 3, 23, 32, 1, 25, 6, 28, 414, 19]
-# for i in input_list:
-#     L1.insert(i)
-# for i in input_list[::-1]:
-#     L2.insert(i)
+for i in range(5, 0, -1):
+    L1.insert(2 * i)
+for i in range(10, 0, -1):
+    L2.insert(2 * i - 1)
 
-# L2.printList()
-# print("")
+L1.printList()
+L2.printList()
 
-# # # print("")
+# # # print("")z
 # print(L1.count())
 # # L1.insertNth(5, "data")
 # L1.printList()
@@ -184,14 +253,23 @@ class LinkedList():
 # print("")
 # secondList.printList()
 
-duplicateList = LinkedList()
-for i in range(15, 0, -1):
-    duplicateList.insert(4)
-duplicateList.insert(2)
-duplicateList.insert(2)
-duplicateList.insert(1)
-duplicateList.insert(1)
-duplicateList.printList()
-print("")
-duplicateList.removeDuplicateFromSorted()
-duplicateList.printList()
+# duplicateList = LinkedList()
+# for i in range(15, 0, -1):
+#     duplicateList.insert(4)
+# duplicateList.insert(2)
+# duplicateList.insert(2)
+# duplicateList.insert(1)
+# duplicateList.insert(1)
+# duplicateList.printList()
+# print("")
+# duplicateList.removeDuplicateFromSorted()
+# duplicateList.printList()
+# L1.printList()
+# listList = L1.alternateList()
+# for list in listList:
+#     list.printList()
+
+# L1.recursiveReverse()
+# L1.printList()
+L1.shuffleMerge(L2)
+L1.printList()
